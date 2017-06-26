@@ -80,7 +80,7 @@ function parseJSONFromStdin() {
                         code: 'ERROR_CANNOT_PARSE_JSON',
                         path: 'stdin',
                     }
-                    reject(err);
+                    reject(error);
                 }
             } else {
                 const err = new Error();
