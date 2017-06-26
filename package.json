@@ -6,6 +6,9 @@
   "repository": "git@github.com:bernardzzz/permutation-markdown-table.git",
   "author": "Bernard Wong <bernardwong.work@gmail.com>",
   "license": "MIT",
+  "bin": {
+    "permutation-markdown-table": "./bin/index.js"
+  },
   "scripts": {
     "test": "tape test/**/*.spec.js | faucet"
   },

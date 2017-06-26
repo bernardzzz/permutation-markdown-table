@@ -1,3 +1,5 @@
+'use strict'
+
 const _ = require('lodash');
 
 function singularElementCombination(dataset) {
@@ -28,7 +30,7 @@ function singularElementCombination(dataset) {
 
 function noArrayInField(dataset) {
     let hasFoundArray = false;
-    for(key in dataset) {
+    for(let key in dataset) {
         if(Array.isArray(dataset[key])) {
             hasFoundArray = true;
             break;
