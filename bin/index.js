@@ -2,7 +2,7 @@
 
 'use strict'
 
-const { input } = require('../src/input.js');
+const { inputAsync } = require('../src/input.js');
 const program = require('commander');
 const { version } = require('../package.json')
 
@@ -15,10 +15,15 @@ program
 
 
 async function main() {
-    const dataset = await input({
+    try {
+    const dataset = await inputAsync({
         source: program.input,
     });
-
+    console.log(dataset);
+} catch(err) {
+    console.log(err.message);
+    process.exit(-1);
+}
 }
 
 main();

@@ -13,6 +13,7 @@
     "test": "tape test/**/*.spec.js | faucet"
   },
   "dependencies": {
+    "bluebird": "^3.5.0",
     "commander": "^2.9.0",
     "lodash": "^4.17.4"
   },
