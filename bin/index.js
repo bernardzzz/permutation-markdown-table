@@ -16,14 +16,12 @@ program
 
 async function main() {
     try {
-    const dataset = await inputAsync({
-        source: program.input,
-    });
-    console.log(dataset);
-} catch(err) {
-    console.log(err.message);
-    process.exit(-1);
-}
+        const dataset = await inputAsync(program.input);
+        console.log(dataset);
+    } catch(err) {
+        console.log(err.message);
+        process.exit(-1);
+    }
 }
 
 main();

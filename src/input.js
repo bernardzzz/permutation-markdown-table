@@ -1,21 +1,31 @@
+'use strict';
+
 const Promise = require('bluebird');
 const fs = Promise.promisifyAll(require('fs'));
 
-async function inputAsync(opt) {
+//////////////////////////////////
+// Begining of Input Processing //
+//////////////////////////////////
+
+
+async function inputAsync(source) {
     try {
-        if(opt.source) {
+        if(source) {
             await validateFile(opt.source);
-            return await parseJSONFile(opt.source);
+            return await parseJSONFromFile(opt.source);
         }
         else {
-            // read stream from stdin
-            console.log('read stdin');
+            return await parseJSONFromStdin();
         }
-        return ''
     } catch(err) {
         handleException(err)
     }
 }
+
+/////////////////////////////
+// End of Input Processing //
+/////////////////////////////
+
 
 function validateFile(filePath) {
     return fs.statAsync(filePath)
@@ -31,7 +41,7 @@ function validateFile(filePath) {
     })
 }
 
-function parseJSONFile(filePath) {
+function parseJSONFromFile(filePath) {
     return fs.readFileAsync(filePath, 'utf8')
     .then(data => {
         try {
@@ -47,16 +57,55 @@ function parseJSONFile(filePath) {
     })
 }
 
+function parseJSONFromStdin() {
+    return new Promise((resolve, reject) => {
+        let data = '';
+        process.stdin.setEncoding('utf8');
+        process.stdin.on('readable', () => {
+            const chunk = process.stdin.read();
+            if(chunk) {
+                data += chunk;
+            } else if (chunk === null) {
+                process.stdin.end();
+            }
+        })
+
+        process.stdin.on('close', () => {
+            if(data) {
+                try {
+                    resolve(JSON.parse(data));
+                } catch(err) {
+                    const error = new Error();
+                    error.cause = {
+                        code: 'ERROR_CANNOT_PARSE_JSON',
+                        path: 'stdin',
+                    }
+                    reject(err);
+                }
+            } else {
+                const err = new Error();
+                err.cause = {
+                    code : 'ERROR_EMPTY_STDIN',
+                }
+                reject(err);
+            }
+        })
+    })
+}
+
 function handleException(err) {
     switch(err.cause.code) {
         case 'ENOENT':
             throw new Error('Error: no such file, ' + err.cause.path);
             break;
         case 'ERROR_NOT_A_FILE':
-            throw new Error('Error: ' + err.cause.path + ' is not a file');
+            throw new Error('Error: ' + err.cause.path + ' is not a file.');
             break;
         case 'ERROR_CANNOT_PARSE_JSON':
             throw new Error('Error: ' + err.cause.path + ' cannot be parsed as JSON file.');
+            break;
+        case 'ERROR_EMPTY_STDIN':
+            throw new Error('Error: no input.')
             break;
         default:
             break;
