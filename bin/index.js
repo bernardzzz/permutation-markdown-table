@@ -6,6 +6,7 @@ const { version } = require('../package.json')
 const { inputAsync } = require('../src/input.js');
 const { processor } = require('../src/process.js');
 const { markdownGenerator } = require('../src/markdown.js');
+const { outputAsync } = require('../src/output.js');
 
 
 program
@@ -21,6 +22,7 @@ async function main() {
         const dataset = await inputAsync(program.input);
         const permutation = processor(dataset);
         const text = markdownGenerator(permutation);
+        await outputAsync(program.output, text);
     } catch(err) {
         console.log(err.message);
         process.exit(-1);
