@@ -1,10 +1,12 @@
 #! /usr/bin/env node
 
 'use strict'
-
-const { inputAsync } = require('../src/input.js');
 const program = require('commander');
 const { version } = require('../package.json')
+const { inputAsync } = require('../src/input.js');
+const { processor } = require('../src/process.js');
+const { markdownGenerator } = require('../src/markdown.js');
+
 
 program
     .version(version)
@@ -17,7 +19,8 @@ program
 async function main() {
     try {
         const dataset = await inputAsync(program.input);
-        console.log(dataset);
+        const permutation = processor(dataset);
+        const text = markdownGenerator(permutation);
     } catch(err) {
         console.log(err.message);
         process.exit(-1);
