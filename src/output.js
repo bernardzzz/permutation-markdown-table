@@ -18,8 +18,9 @@ async function outputAsync(dest, text) {
 
 function outputToFile(dest, text) {
     return new Promise((resolve, reject) => {
-        await fs.writeFileAsync(dest, text)
-            .then(() => resolve())
+        fs.writeFileAsync(dest, text)
+            .then( data => resolve())
+            .catch( err => reject(err))
     })
 }
 
@@ -31,7 +32,13 @@ function outputToStdout(text) {
 }
 
 function handleException(error) {
-
+    switch(error.cause.code) {
+        case 'EISDIR':
+            throw new Error(`Error: ${error.cause.path} is a directory, not a file.`);
+            break;
+        default:
+            throw error;
+    }
 }
 
 exports.outputAsync = outputAsync;

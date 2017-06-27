@@ -108,6 +108,7 @@ function handleException(err) {
             throw new Error('Error: no input.')
             break;
         default:
+            throw err;
             break;
 
     }
