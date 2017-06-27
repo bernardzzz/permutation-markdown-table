@@ -11,8 +11,8 @@ const fs = Promise.promisifyAll(require('fs'));
 async function inputAsync(source) {
     try {
         if(source) {
-            await validateFile(opt.source);
-            return await parseJSONFromFile(opt.source);
+            await validateFile(source);
+            return await parseJSONFromFile(source);
         }
         else {
             return await parseJSONFromStdin();
@@ -94,6 +94,7 @@ function parseJSONFromStdin() {
 }
 
 function handleException(err) {
+    console.log(err);
     switch(err.cause.code) {
         case 'ENOENT':
             throw new Error('Error: no such file, ' + err.cause.path);
