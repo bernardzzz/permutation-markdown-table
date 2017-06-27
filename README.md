@@ -6,8 +6,8 @@ This utility reads JSON in certain format from STDIN or a file, generates combin
 
 ```js
 {
-  	"breakfast": ["milk", "toast", "bacon & eggs"],
- 	"lunch": ["sandwich", "oily Asian take-away"],
+    "breakfast": ["milk", "toast", "bacon & eggs"],
+    "lunch": ["sandwich", "oily Asian take-away"],
     "supper": "some microwave food",
     "snacks": ["Mars", "Oreo"],
     "budget": 9.99
@@ -78,4 +78,3 @@ For convinience, the recommended installation is via NPM.
 ```bash
 npm install -g permutation-markdown-table
 ```
-
