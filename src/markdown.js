@@ -6,7 +6,9 @@ function markdownGenerator(permutation, dataset) {
 
     // Extract table header and column widths
     const tableHeader = [];
-    let colWidths = []
+    let colWidths = [];
+    const keyToIdx = {};
+    let count = 0;
     for(let key in dataset) {
         tableHeader.push(key);
         let colWidth = 0;
@@ -17,11 +19,11 @@ function markdownGenerator(permutation, dataset) {
         } else {
             colWidth = Math.max(`${dataset[key]}`.length, key.length);
         }
+        keyToIdx[key] = count;
         colWidths.push(colWidth);
+        count++;
     }
 
-
-    console.log(colWidths);
     // add extra padding to column widths
     colWidths = colWidths.map( widths => widths + 2);
 
@@ -41,16 +43,13 @@ function markdownGenerator(permutation, dataset) {
     }, '|');
     text = text + '\n';
 
+    // Add table body
     for(let i = 0; i < permutation.length; i++) {
-        const textMap = tableHeader.reduce( (acc, curr) => {
-            acc[curr] = '';
-            return acc;
-        }, {});
+        const textMap = {};
         for(let key in permutation[i]) {
-            const idx = tableHeader.findIndex( headname => headname === key);
+            const idx = keyToIdx[key];
             textMap[key] = rightPadding(`${permutation[i][key]}`, colWidths[idx]) + '|';
         }
-
         const line = tableHeader
             .map( headname => textMap[headname])
             .reduce( (acc, curr) => acc + curr, '');
