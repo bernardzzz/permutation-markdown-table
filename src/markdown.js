@@ -50,9 +50,10 @@ function markdownGenerator(permutation, dataset) {
             const idx = keyToIdx[key];
             textMap[key] = rightPadding(`${permutation[i][key]}`, colWidths[idx]) + '|';
         }
-        const line = tableHeader
-            .map( headname => textMap[headname])
-            .reduce( (acc, curr) => acc + curr, '');
+        let line = '';
+        tableHeader.forEach( headname => {
+            line += textMap[headname];
+        })
         text += '|' + line + '\n';
     }
 
