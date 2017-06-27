@@ -8,21 +8,21 @@ function markdownGenerator(permutation) {
 
     // extract table header
     for(let i = 0; i < permutation.length; i++) {
-        if(_.isObject(permutation[i])) {
-            for(let key in permutation[i]) {
-                if(!tableHeader.find( headname => headname === key)) {
-                    tableHeader.push(key);
-                    colWidths.push(0);
-                }
-                const idx = tableHeader.findIndex( headname => headname === key);
-                colWidths[idx] = permutation[i][key].length > colWidths[idx] ? permutation[i][key].length : colWidths[idx]
+        for(let key in permutation[i]) {
+            if(!tableHeader.find( headname => headname === key)) {
+                tableHeader.push(key);
+                colWidths.push(0);
             }
+            const idx = tableHeader.findIndex( headname => headname === key);
+            colWidths[idx] = Math.max(`${permutation[i][key]}`.length, colWidths[idx], key.length);
         }
     }
+    // add extra padding to column widths
+    colWidths = colWidths.map( widths => widths + 2);
 
     // Add markdown header
     let text = tableHeader.reduce( (acc, headname, idx) => {
-        return acc + textPadding(headname, colWidths[idx]) + '|'
+        return acc + rightPadding(headname, colWidths[idx]) + '|'
     }, '|');
     text = text + '\n';
 
@@ -43,7 +43,7 @@ function markdownGenerator(permutation) {
         }, {});
         for(let key in permutation[i]) {
             const idx = tableHeader.findIndex( headname => headname === key);
-            textMap[key] = textPadding(permutation[i][key], colWidths[idx]) + '|';
+            textMap[key] = rightPadding(`${permutation[i][key]}`, colWidths[idx]) + '|';
         }
 
         const line = tableHeader
@@ -94,5 +94,17 @@ function inflateText(text, length) {
     return result
 }
 
+function rightPadding(text, length) {
+    if(text.length >= length) {
+        return text;
+    }
+    let result = text;
+    for(let i = 0; i < length - text.length - 1; i++) {
+        result += ' ';
+    }
+    return ' ' + result;
+}
+
 exports.markdownGenerator = markdownGenerator;
 exports.textPadding = textPadding;
+exports.rightPadding = rightPadding;
