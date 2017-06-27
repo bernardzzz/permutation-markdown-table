@@ -1,5 +1,7 @@
 # permutation-markdown-table
 
+[![Build Status](https://travis-ci.org/bernardzzz/permutation-markdown-table.svg?branch=master)](https://travis-ci.org/bernardzzz/permutation-markdown-table)
+
 This utility reads JSON in certain format from STDIN or a file, generates combination of values, and outputs to STDOUT or a file.
 
 ## Sample Input
