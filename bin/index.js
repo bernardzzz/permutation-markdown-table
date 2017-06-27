@@ -21,7 +21,7 @@ async function main() {
     try {
         const dataset = await inputAsync(program.input);
         const permutation = processor(dataset);
-        const text = markdownGenerator(permutation);
+        const text = markdownGenerator(permutation, dataset);
         await outputAsync(program.output, text);
     } catch(err) {
         console.log(err.message);

@@ -2,21 +2,26 @@
 
 const _ = require('lodash');
 
-function markdownGenerator(permutation) {
-    const tableHeader = []
-    let colWidths = []
+function markdownGenerator(permutation, dataset) {
 
-    // extract table header
-    for(let i = 0; i < permutation.length; i++) {
-        for(let key in permutation[i]) {
-            if(!tableHeader.find( headname => headname === key)) {
-                tableHeader.push(key);
-                colWidths.push(0);
-            }
-            const idx = tableHeader.findIndex( headname => headname === key);
-            colWidths[idx] = Math.max(`${permutation[i][key]}`.length, colWidths[idx], key.length);
+    // Extract table header and column widths
+    const tableHeader = [];
+    let colWidths = []
+    for(let key in dataset) {
+        tableHeader.push(key);
+        let colWidth = 0;
+        if(Array.isArray(dataset[key])) {
+            dataset[key].forEach( val => {
+                colWidth = Math.max(`${val}`.length,colWidth, key.length);
+            })
+        } else {
+            colWidth = Math.max(`${dataset[key]}`.length, key.length);
         }
+        colWidths.push(colWidth);
     }
+
+
+    console.log(colWidths);
     // add extra padding to column widths
     colWidths = colWidths.map( widths => widths + 2);
 
