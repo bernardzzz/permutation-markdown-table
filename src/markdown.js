@@ -24,24 +24,40 @@ function markdownGenerator(permutation, dataset) {
         count++;
     }
 
+    // Calculate the String Buffer needed
+    const lineSize = colWidths.reduce((sum, width) => sum + width + 3, 0) + 1 + 1
+    const bufferSize = (lineSize + 2) * ( permutation.length + 2 );
+    const buf = Buffer.alloc(bufferSize);
+    let bufOffset = 0;
+
     // add extra padding to column widths
     colWidths = colWidths.map( widths => widths + 2);
 
     // Add markdown header
-    let text = tableHeader.reduce( (acc, headname, idx) => {
-        return acc + rightPadding(headname, colWidths[idx]) + '|'
-    }, '|');
-    text = text + '\n';
+    buf.write('|', bufOffset);
+    bufOffset += 1;
+    for(let i = 0; i < tableHeader.length; i++) {
+        let writable = rightPadding(tableHeader[i], colWidths[i]) + '|'
+        buf.write(writable, bufOffset);
+        bufOffset += writable.length;
+    }
+    buf.write('\n', bufOffset);
+    bufOffset += 1;
 
     // Add markdown divider
-    text += tableHeader.reduce( (acc, headname, idx) => {
+    buf.write('|', bufOffset);
+    bufOffset += 1;
+    for(let i = 0; i < tableHeader.length; i++) {
         let divider = '';
-        for(let i = 0; i < colWidths[idx]; i++) {
+        for(let j = 0; j < colWidths[i]; j++) {
             divider += '-';
         }
-        return acc + divider + '|'
-    }, '|');
-    text = text + '\n';
+        divider = divider + '|'
+        buf.write(divider, bufOffset);
+        bufOffset += divider.length;
+    }
+    buf.write('\n', bufOffset);
+    bufOffset += 1;
 
     // Add table body
     for(let i = 0; i < permutation.length; i++) {
@@ -50,15 +66,19 @@ function markdownGenerator(permutation, dataset) {
             const idx = keyToIdx[key];
             textMap[key] = rightPadding(`${permutation[i][key]}`, colWidths[idx]) + '|';
         }
-        let line = '';
+
+        buf.write('|', bufOffset);
+        bufOffset += 1;
         tableHeader.forEach( headname => {
-            line += textMap[headname];
+            buf.write(textMap[headname], bufOffset);
+            bufOffset += textMap[headname].length
         })
-        text += '|' + line + '\n';
+        buf.write('\n', bufOffset);
+        bufOffset += 1;
+
     }
 
-
-    return text;
+    return buf.toString();
 }
 
 /**
