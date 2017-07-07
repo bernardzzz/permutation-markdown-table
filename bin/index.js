@@ -2,7 +2,7 @@
 
 'use strict'
 const program = require('commander');
-const { version } = require('../package.json')
+const { version, description } = require('../package.json')
 const { inputAsync } = require('../src/input.js');
 const { processor } = require('../src/process.js');
 const { markdownGenerator } = require('../src/markdown.js');
@@ -11,13 +11,15 @@ const { outputAsync } = require('../src/output.js');
 
 program
     .version(version)
-    .usage('The permutation-markdown-table utility process input from stdin or file and generate all possible permutations or combinations. Then it outputs a table of them in markdown sytax.')
+    .usage('[options]')
+    .description(description)
     .option('-i, --input <value>', 'path to the input file, from stdin by default')
     .option('-o, --output <value>', 'path to the output file, to stdout by default')
     .parse(process.argv)
 
 
 async function main() {
+    debugger
     try {
         const dataset = await inputAsync(program.input);
         const permutation = processor(dataset);
