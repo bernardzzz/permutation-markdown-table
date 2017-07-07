@@ -1,6 +1,6 @@
 {
   "name": "permutation-markdown-table",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "generate permutation/combination table in markdown syntax",
   "main": "index.js",
   "repository": "git@github.com:bernardzzz/permutation-markdown-table.git",
