@@ -21,7 +21,6 @@
     "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "faucet": "^0.0.1",
     "tape": "^4.6.3"
   }
 }
