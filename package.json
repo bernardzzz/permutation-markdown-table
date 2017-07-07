@@ -13,7 +13,7 @@
     "permutation-markdown-table": "./bin/index.js"
   },
   "scripts": {
-    "test": "tape 'test/**/*.spec.js' | faucet"
+    "test": "tape './test/**/*.spec.js' | faucet"
   },
   "dependencies": {
     "bluebird": "^3.5.0",
