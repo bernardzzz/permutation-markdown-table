@@ -1,9 +1,8 @@
-'use strict'
+'use strict';
 
 const _ = require('lodash');
 
 function singularElementCombination(dataset) {
-
     if (_.isEmpty(dataset)) {
         return [];
     }
@@ -11,32 +10,21 @@ function singularElementCombination(dataset) {
     let result = [];
 
     for (let key in dataset) {
-        if(Array.isArray(dataset[key]) && dataset[key].length > 1) {
-            for (let i = 0; i < dataset[key].length; i++) {
+        if (Array.isArray(dataset[key])) {
+            for (let i = 0, l = dataset[key].length; i < l; i++) {
                 result = result.concat(singularElementCombination(Object.assign({}, _.cloneDeep(dataset), {
-                    [key]: dataset[key][i],
-                })))
+                    [key]: dataset[key][i]
+                })));
             }
             break;
         }
     }
 
-    if(noArrayInField(dataset)) {
+    if (result.length === 0) {
         result.push(dataset);
     }
 
-    return result
-}
-
-function noArrayInField(dataset) {
-    let hasFoundArray = false;
-    for(let key in dataset) {
-        if(Array.isArray(dataset[key])) {
-            hasFoundArray = true;
-            break;
-        }
-    }
-    return !hasFoundArray;
+    return result;
 }
 
 exports.singularElementCombination = singularElementCombination;
