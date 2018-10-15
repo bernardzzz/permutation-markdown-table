@@ -21,6 +21,12 @@
     "lodash": "^4.17.4"
   },
   "devDependencies": {
+    "cz-conventional-changelog": "^2.1.0",
     "tape": "^4.6.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
