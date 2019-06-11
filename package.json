@@ -18,7 +18,7 @@
   "dependencies": {
     "bluebird": "^3.5.0",
     "commander": "^2.9.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "cz-conventional-changelog": "^2.1.0",
